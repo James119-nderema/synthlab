@@ -1,0 +1,59 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Student Privacy | SynthLab{% endblock %}
+{% block page_title %}Student-level privacy{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Define student-level privacy</h2>
+        <p>Choose a cleaned dataset and identify each student so the privacy policy applies to that student’s whole contribution.</p>
+      </div>
+      <a href="/privacy-mechanism/" class="btn btn-primary">Next: privacy mechanism</a>
+    </div>
+
+    <form id="privacyPolicyForm">
+      <div class="settings-grid">
+        <label><span>Cleaned source dataset</span><select name="dataset_id" id="cleanedDatasetSelect" required><option value="">Loading cleaned datasets…</option></select></label>
+        <label><span>Student ID column</span><select name="student_id_col" id="studentIdColumn" required><option value="">Select a dataset first</option></select></label>
+        <label><span>Students observed</span><input type="text" id="studentsObserved" value="—" readonly /></label>
+        <label><span>Rows per student in dataset</span><input type="text" id="rowsPerStudent" value="—" readonly /></label>
+        <label>
+          <span>Contribution bound</span>
+          <select name="privacy_unit_policy" id="privacyUnitPolicy"><option value="1">One row per student</option><option value="bounded">Bound each student to a maximum number of rows</option></select>
+        </label>
+        <label id="maxRowsField" class="hidden"><span>Maximum rows per student</span><input type="number" name="max_rows_per_student" min="1" value="1" /></label>
+      </div>
+      <div class="card-actions" style="margin-top:20px;">
+        <button type="submit" id="savePolicyBtn" class="btn btn-primary">Save policy and run risk scan</button>
+        <a href="/data-preprocessing/" class="btn btn-secondary">Back to preprocessing</a>
+      </div>
+      <div id="policyStatus" class="status-inline hidden" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Privacy attributes</h2></div>
+    <p class="muted-copy">Quasi-identifiers can identify a student when combined. Sensitive attributes are outcomes or details the release should protect.</p>
+    <div class="settings-grid">
+      <label><span>Quasi-identifiers</span><select multiple size="6" id="quasiIdentifierSelect"></select></label>
+      <label><span>Sensitive attributes</span><select multiple size="6" id="sensitiveAttributeSelect"></select></label>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Public numeric bounds</h2></div>
+    <p class="muted-copy">Numeric values are clipped to these bounds and binned before synthesis. Use valid public limits (for example, official score ranges), not ranges inferred from private student records.</p>
+    <div id="publicBoundsFields" class="settings-grid"><p class="muted-copy">Select a cleaned dataset to configure its numeric columns.</p></div>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Dataset risk scan</h2></div>
+    <p class="muted-copy">The scan checks whether selected quasi-identifier combinations form groups smaller than five. It is a screening diagnostic, not a differential privacy guarantee.</p>
+    <div id="riskScanResult" class="summary-grid"><p class="muted-copy">Select a cleaned dataset and save the policy to run the scan.</p></div>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/student_privacy.js' %}"></script>{% endblock %}

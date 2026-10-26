@@ -1,0 +1,40 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}AI Analytics Model | SynthLab{% endblock %}
+{% block page_title %}AI analytics model{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Train analytics model</h2>
+        <p>Compare training on DP synthetic data and cleaned real data. Both models are scored on the same real holdout, split by student.</p>
+      </div>
+      <span class="badge badge-secondary">Student-level holdout</span>
+    </div>
+    <div class="settings-grid">
+      <label><span>DP synthetic dataset</span><select id="modelDatasetSelect"><option value="">Loading DP outputs…</option></select></label>
+      <label><span>Target</span><select id="modelTargetSelect" disabled><option value="">Choose a dataset first</option></select></label>
+      <label><span>Model</span><select id="modelSelect"><option value="Random Forest">Random Forest</option><option value="XGBoost">XGBoost</option><option value="MLP">MLP</option></select></label>
+    </div>
+    <div class="card-actions">
+      <button id="trainModelBtn" type="button" class="btn btn-primary">Train and compare</button>
+      <a href="/evaluate-predictions/" class="btn btn-secondary">Continue to prediction evaluation</a>
+    </div>
+    <p id="modelStatus" class="muted-copy" aria-live="polite">Choose a DP output to load its available targets.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Performance comparison</h2></div>
+    <div class="summary-grid">
+      <div class="summary-item"><span id="syntheticMetricLabel" class="summary-label">Synthetic-trained score</span><strong id="syntheticModelScore">—</strong></div>
+      <div class="summary-item"><span id="realMetricLabel" class="summary-label">Real-trained score</span><strong id="realModelScore">—</strong></div>
+      <div class="summary-item"><span id="gapMetricLabel" class="summary-label">Score gap</span><strong id="modelScoreGap">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Holdout students</span><strong id="modelHoldoutStudents">—</strong></div>
+    </div>
+    <p id="modelRunDetails" class="muted-copy"></p>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/ai_analytics_model.js' %}?v=20261023-1"></script>{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Synthetic Records | SynthLab{% endblock %}
+{% block page_title %}Generate synthetic records{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div><h2>Review privately generated records</h2><p>Choose the output created by the DP generator, preview it, and download the CSV.</p></div>
+      <a href="/dp-generator/" class="btn btn-secondary">Back to DP generator</a>
+    </div>
+    <div class="settings-grid">
+      <label><span>DP synthetic dataset</span><select id="syntheticDatasetSelect"><option value="">Loading generated datasets…</option></select></label>
+      <div class="card-actions"><a id="downloadSyntheticRecords" class="btn btn-primary hidden" href="#">Download synthetic CSV</a><a href="/synthetic-validation/" class="btn btn-secondary">Continue to validation</a></div>
+    </div>
+    <p id="syntheticRecordsStatus" class="muted-copy" aria-live="polite"></p>
+  </section>
+  <section class="card preview-card">
+    <div class="card-header"><h2>Record preview</h2></div>
+    <div class="table-wrap preview-table-wrap"><table class="data-table"><thead id="syntheticPreviewHead"></thead><tbody id="syntheticPreviewBody"></tbody></table></div>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/synthetic_records.js' %}"></script>{% endblock %}

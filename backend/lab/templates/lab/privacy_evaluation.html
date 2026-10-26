@@ -1,0 +1,85 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Evaluation | SynthLab{% endblock %}
+{% block page_title %}Privacy evaluation{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Privacy assessment</h2>
+        <p>Choose one DP synthetic dataset. SynthLab will automatically compare it with the cleaned source used to generate it.</p>
+      </div>
+      <div class="button-row">
+        <button id="privacyRunBtn" class="btn btn-primary" type="button">Run privacy check</button>
+        <button id="exportReportBtn" class="btn btn-secondary" type="button" disabled>Export report</button>
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <label>
+        <span>DP synthetic dataset</span>
+        <select id="privacySyntheticSelect"><option value="">Loading DP outputs…</option></select>
+      </label>
+    </div>
+    <p id="privacyRunMessage" class="muted-copy" aria-live="polite"></p>
+  </section>
+
+  <section id="privacyReportCard" class="card summary-card hidden">
+    <div class="card-header split-header">
+      <div>
+        <h2>Risk summary</h2>
+      </div>
+      <span id="privacyRiskBadge" class="badge badge-pass">Low</span>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Status</span>
+        <strong id="privacyStatus">Ready</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Compared datasets</span>
+        <strong id="privacyComparedDatasets">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Exact matches</span>
+        <strong id="exactMatchValue">0.00%</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">DCR</span>
+        <strong id="dcrSummary">0.00</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Baseline DCR</span>
+        <strong id="dcrBaseline">0.00</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Membership AUC</span>
+        <strong id="aucValue">0.00</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Interpretation</span>
+        <p id="privacyExplanation" class="muted-copy">No check run yet.</p>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">What to do next</span>
+        <ul id="recommendationList" class="change-log"></ul>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Reasons</span>
+        <ul id="reasonList" class="change-log"></ul>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">DCR histogram</span>
+        <div id="privacyHistogram" class="histogram-block"></div>
+      </div>
+    </div>
+  </section>
+  <section class="card"><a href="/utility-evaluation/" class="btn btn-primary">Continue to utility evaluation</a></section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'lab/js/privacy.js' %}?v=20261023-2"></script>
+{% endblock %}

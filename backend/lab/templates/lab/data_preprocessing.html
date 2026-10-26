@@ -1,0 +1,150 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Data Preprocessing | SynthLab{% endblock %}
+{% block page_title %}Data preprocessing{% endblock %}
+
+{% block content %}
+  <section class="card upload-card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Import and clean academic data</h2>
+        <p>Select source data added in the previous step, then clean and profile it before defining the student privacy unit.</p>
+      </div>
+    </div>
+
+    <div class="toolbar-grid">
+      <div class="dataset-select-wrap">
+        <label for="simulatedDatasetSelect">Source dataset</label>
+        <select id="simulatedDatasetSelect">
+          <option value="">Choose source data</option>
+          {% for dataset in source_datasets %}
+            <option value="{{ dataset.id }}">{{ dataset.name }} · {{ dataset.stage }} · {{ dataset.rows }} rows</option>
+          {% empty %}
+            <option value="" disabled>No uploaded or generated source data found</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="button" id="attachDatasetBtn" class="btn btn-secondary">Select dataset</button>
+      <button type="button" id="refreshDatasetsBtn" class="btn btn-secondary">Refresh list</button>
+    </div>
+    <p id="datasetListStatus" class="muted-copy" aria-live="polite"></p>
+  </section>
+
+  <section class="card profile-card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Dataset profile</h2>
+      </div>
+      <a class="btn btn-secondary" href="/real-data/">Back to real data</a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Missing %</th>
+            <th>Unique</th>
+            <th>Stats</th>
+            <th>Identifier</th>
+          </tr>
+        </thead>
+        <tbody id="profileTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card options-card">
+    <div class="card-header">
+      <h2>Cleaning options</h2>
+    </div>
+
+    <div class="options-grid">
+      <label class="checkbox-row">
+        <input type="checkbox" id="dropDuplicateRows" checked />
+        <span>Drop duplicate rows</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" id="dropIdentifierColumns" checked />
+        <span>Drop identifier columns</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" id="normalizeCategoryCase" checked />
+        <span>Normalize category casing</span>
+      </label>
+      <label>
+        <span>Missing numeric strategy</span>
+        <select id="missingNumericPolicy">
+          <option value="mean">Mean</option>
+          <option value="median">Median</option>
+          <option value="drop">Drop rows</option>
+        </select>
+      </label>
+      <label>
+        <span>Missing categorical strategy</span>
+        <select id="missingCategoricalPolicy">
+          <option value="mode">Mode</option>
+          <option value="Unknown">Unknown</option>
+          <option value="drop">Drop rows</option>
+        </select>
+      </label>
+      <label>
+        <span>Outlier strategy</span>
+        <select id="outlierStrategy">
+          <option value="none">None</option>
+          <option value="clip">Clip to IQR</option>
+          <option value="drop_rows">Drop rows</option>
+        </select>
+      </label>
+      <label>
+        <span>Missing threshold</span>
+        <input id="missingThreshold" type="number" min="0" max="1" step="0.1" value="0.8" />
+      </label>
+      <label>
+        <span>Privacy unit key</span>
+        <input id="privacyUnitKey" type="text" value="student_id" placeholder="student_id" />
+      </label>
+    </div>
+
+    <div class="card-actions">
+      <button id="cleanBtn" class="btn btn-primary" type="button">Clean data</button>
+    </div>
+  </section>
+
+  <section id="cleanSummaryCard" class="card summary-card hidden">
+    <div class="card-header split-header">
+      <div>
+        <h2>Before vs after summary</h2>
+      </div>
+      <div class="button-row">
+        <a id="downloadCleanedBtn" class="btn btn-secondary" href="#">Download cleaned CSV</a>
+        <a class="btn btn-primary" href="/student-privacy/">Continue to privacy definition</a>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Before rows</span>
+        <strong id="beforeRows">0</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">After rows</span>
+        <strong id="afterRows">0</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Missing cells</span>
+        <strong id="missingCells">0</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Change log</span>
+        <ul id="changeLogList" class="change-log"></ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'lab/js/prepare.js' %}?v=20261023-2"></script>
+{% endblock %}

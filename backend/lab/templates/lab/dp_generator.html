@@ -1,0 +1,61 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}DP Generator | SynthLab{% endblock %}
+{% block page_title %}Train synthetic data generator with differential privacy{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Train the private generator</h2>
+        <p>Review the selected dataset and privacy configuration before training. Synthetic records are created in the next step.</p>
+      </div>
+    </div>
+
+    <div class="method-grid">
+      <div class="method-card selected">
+        <strong>PAC-Synth DP marginals</strong>
+        <span class="badge badge-pass">Differentially private</span>
+        <small>Fits protected attribute marginals, then samples records as post-processing.</small>
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <label>
+        <span>Source dataset</span>
+        <select id="datasetSelect"><option value="">Loading cleaned datasets…</option></select>
+      </label>
+      <label>
+        <span>Rows</span>
+        <input id="rowCountInput" type="number" min="10" max="10000" value="500" />
+      </label>
+      <label>
+        <span>Seed</span>
+        <input id="seedInput" type="number" value="42" />
+      </label>
+      <label>
+        <span>Privacy policy</span>
+        <div class="mini-policy">
+          <strong>Student-level policy</strong>
+          <small>Parameters come from the saved policy.</small>
+        </div>
+      </label>
+    </div>
+
+    <div class="card-actions">
+      <button id="trainGeneratorBtn" type="button" class="btn btn-primary" disabled>Train DP generator</button>
+      <a href="/student-privacy/" class="btn btn-secondary">Review privacy policy</a>
+      <a href="/data-preprocessing/" class="btn btn-secondary">Go to preprocessing</a>
+    </div>
+    <p id="sourceDatasetStatus" class="muted-copy" aria-live="polite"></p>
+  </section>
+
+  <section class="card">
+    <p class="muted-copy">Training uses PAC-Synth DP marginals. Student records are bounded and aggregated to one record per student; numeric features are clipped to public bounds and binned before fitting. The configured epsilon and delta apply to student-level records.</p>
+    <a href="/synthetic-records/" class="btn btn-secondary">Continue to synthetic records</a>
+  </section>
+  <section id="trainingResultCard" class="card hidden" aria-live="polite"></section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/dp_generator.js' %}"></script>{% endblock %}

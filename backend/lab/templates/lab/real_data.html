@@ -1,0 +1,123 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Real Academic Data | SynthLab{% endblock %}
+{% block page_title %}Real academic data{% endblock %}
+
+{% block content %}
+  <section class="card upload-card">
+    <div class="card-header"><h2>Upload real academic data</h2><p>Import a CSV dataset to begin the pipeline.</p></div>
+    <div class="card-actions"><input id="realDataFile" type="file" accept=".csv,text/csv" /><button id="uploadRealDataBtn" type="button" class="btn btn-primary">Upload CSV</button><span id="realDataUploadStatus" class="muted-copy" aria-live="polite"></span></div>
+    <a class="btn btn-secondary" href="/data-preprocessing/">Continue to preprocessing</a>
+  </section>
+
+  <section class="card schema-card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Choose or create the source data</h2>
+        <p>Start with a real academic CSV. The schema builder can also create a clearly labeled sample dataset for development.</p>
+      </div>
+      <div class="button-row">
+        <select id="exampleSchemaSelect" class="preset-select" aria-label="Choose a schema preset">
+          <option value="customer">Customer data</option>
+          <option value="school">School performance</option>
+          <option value="academic" selected>Academic records</option>
+          <option value="jobs">Jobs & employment</option>
+          <option value="business">Business operations</option>
+        </select>
+        <button type="button" id="loadExampleBtn" class="btn btn-secondary">Load example schema</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="schema-table">
+        <thead>
+          <tr>
+            <th>Column name</th>
+            <th>Type</th>
+            <th>Parameters</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="schemaRows"></tbody>
+      </table>
+    </div>
+
+    <div class="card-actions">
+      <button type="button" id="addColumnBtn" class="btn btn-secondary">Add column</button>
+    </div>
+  </section>
+
+  <section class="card settings-card">
+    <div class="card-header">
+      <h2>Generation settings</h2>
+    </div>
+    <div class="settings-grid">
+      <label>
+        <span>Rows</span>
+        <input id="rowCountInput" type="number" min="1" max="100000" value="500" />
+      </label>
+      <label>
+        <span>Rows per student</span>
+        <input id="rowsPerStudentInput" type="number" min="1" max="8" value="3" />
+      </label>
+      <label>
+        <span>Seed</span>
+        <input id="seedInput" type="number" value="42" />
+      </label>
+    </div>
+  </section>
+
+  <section class="card preview-card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Preview</h2>
+        <p>View the first 10 generated rows before finalizing.</p>
+      </div>
+      <div class="button-row">
+        <button type="button" id="previewBtn" class="btn btn-primary">Preview</button>
+        <button type="button" id="generateBtn" class="btn btn-primary">Generate</button>
+      </div>
+    </div>
+
+    <div id="previewStatus" class="status-inline hidden"></div>
+    <div class="table-wrap preview-table-wrap">
+      <table id="previewTable" class="data-table">
+        <thead id="previewHead"></thead>
+        <tbody id="previewBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="summaryCard" class="card summary-card hidden">
+    <div class="card-header split-header">
+      <div>
+        <h2>Dataset summary</h2>
+      </div>
+      <div class="button-row">
+        <a id="downloadBtn" class="btn btn-secondary" href="#">Download CSV</a>
+        <a id="continueBtn" class="btn btn-primary" href="/data-preprocessing/">Continue to preprocessing</a>
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Rows</span>
+        <strong id="summaryRows">0</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Columns</span>
+        <strong id="summaryCols">0</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Dtypes</span>
+        <div id="summaryDtypes" class="pill-list"></div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'lab/js/simulate.js' %}"></script>
+  <script src="{% static 'lab/js/real_data.js' %}"></script>
+{% endblock %}

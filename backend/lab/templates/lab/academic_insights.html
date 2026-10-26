@@ -1,0 +1,58 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Academic Insights | SynthLab{% endblock %}
+{% block page_title %}Privacy-preserving academic insights{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Explore synthetic academic outcomes</h2>
+        <p>Summaries are calculated from the selected differentially private synthetic dataset.</p>
+      </div>
+      <span class="badge badge-secondary">Synthetic data only</span>
+    </div>
+    <div class="settings-grid">
+      <label><span>DP synthetic dataset</span><select id="insightsDatasetSelect"><option value="">Loading DP outputs…</option></select></label>
+      <label><span>Group records by</span><select id="insightsGroupSelect" disabled><option value="">Choose a dataset first</option></select></label>
+      <label><span>Numeric outcome</span><select id="insightsMetricSelect" disabled><option value="">Choose a dataset first</option></select></label>
+    </div>
+    <div class="card-actions">
+      <button id="runInsightsBtn" type="button" class="btn btn-primary">Generate insights</button>
+    </div>
+    <p id="insightsStatus" class="muted-copy" aria-live="polite">Choose a DP output to begin.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Outcome overview</h2></div>
+    <div class="summary-grid">
+      <div class="summary-item"><span class="summary-label">Records summarized</span><strong id="insightsRecordCount">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Mean</span><strong id="insightsMean">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Median</span><strong id="insightsMedian">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Range</span><strong id="insightsRange">—</strong></div>
+    </div>
+    <p id="insightsDescription" class="muted-copy"></p>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Outcome by group</h2></div>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>Group</th><th>Records</th><th>Mean</th><th>Median</th></tr></thead>
+      <tbody id="insightsTableBody"><tr><td colspan="4">Generate insights to see group summaries.</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Privacy parameters</h2></div>
+    <div class="summary-grid">
+      <div class="summary-item"><span class="summary-label">Configured ε</span><strong id="insightsEpsilon">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Configured δ</span><strong id="insightsDelta">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Cumulative ε spent</span><strong id="insightsEpsilonSpent">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Accountant</span><strong id="insightsAccountant">—</strong></div>
+    </div>
+    <p class="muted-copy">The selected synthetic release inherits its configured student-level guarantee. Cumulative spend reflects releases recorded for the linked source dataset.</p>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/academic_insights.js' %}?v=20261023-1"></script>{% endblock %}

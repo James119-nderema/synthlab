@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}SynthLab{% endblock %}</title>
+    <meta name="description" content="Synthetic data workbench" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'lab/css/style.css' %}" />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">S</div>
+          <div>
+            <div class="brand-name">SynthLab</div>
+            <div class="brand-subtitle">workbench</div>
+          </div>
+        </div>
+
+        <nav class="step-nav" aria-label="Pipeline steps">
+          {% for step in steps %}
+            <a href="{{ step.url }}" class="step-item {% if step.current %}active{% endif %} {% if step.done %}done{% endif %}" aria-current="{{ step.current|yesno:'page,false' }}">
+              <span class="step-index">{{ step.number }}</span>
+              <span class="step-copy">
+                <span class="step-label">{{ step.label }}</span>
+              </span>
+            </a>
+          {% endfor %}
+        </nav>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Synthetic data pipeline</p>
+            <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+          </div>
+        </header>
+
+        <div class="content-wrap">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="{% static 'lab/js/app.js' %}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,69 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Utility Evaluation | SynthLab{% endblock %}
+{% block page_title %}Utility evaluation{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Utility evaluation</h2>
+        <p>Compare a DP synthetic dataset with its cleaned source. TSTR trains a regression model on synthetic rows and evaluates it on held-out real rows.</p>
+      </div>
+      <a href="/privacy-utility-analysis/" class="btn btn-primary">Continue to privacy–utility analysis</a>
+    </div>
+
+    <div class="settings-grid">
+      <label><span>DP synthetic dataset</span><select id="utilityDatasetSelect"><option value="">Loading DP outputs…</option></select></label>
+      <label><span>Numeric prediction target</span><select id="utilityTargetSelect" disabled><option value="">Choose a dataset first</option></select></label>
+    </div>
+    <div class="card-actions">
+      <button id="runUtilityBtn" type="button" class="btn btn-secondary">Run utility evaluation</button>
+    </div>
+    <p id="utilityStatus" class="muted-copy" aria-live="polite"></p>
+    <p id="utilityComparison" class="muted-copy"></p>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Configured epsilon</span>
+        <strong id="utilityEpsilon">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Fidelity score</span>
+        <strong id="utilityScore">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">TSTR R²</span>
+        <strong id="utilityTstr">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Fidelity vs real split baseline</span>
+        <strong id="utilityBaseline">—</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>Results table</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Epsilon</th><th>Fidelity</th><th>Δ vs baseline</th><th>TSTR R²</th><th>Target</th></tr>
+        </thead>
+        <tbody id="sweepTableBody">
+          <tr><td colspan="5">Choose a DP synthetic dataset and run the evaluation.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Column fidelity details</h2>
+    <ul id="utilityDetails" class="change-log"><li>Run an evaluation to see per-column results.</li></ul>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/utility.js' %}?v=20261023-1"></script>{% endblock %}
+

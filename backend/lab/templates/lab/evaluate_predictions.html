@@ -1,0 +1,61 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Evaluate Predictions | SynthLab{% endblock %}
+{% block page_title %}Evaluate predictions{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Evaluate predictions</h2>
+        <p>Compare synthetic-trained and real-trained models on the same held-out real students.</p>
+      </div>
+      <span class="badge badge-secondary">Student-level holdout</span>
+    </div>
+    <div class="settings-grid">
+      <label><span>DP synthetic dataset</span><select id="predictionDatasetSelect"><option value="">Loading DP outputs…</option></select></label>
+      <label><span>Target</span><select id="predictionTargetSelect" disabled><option value="">Choose a dataset first</option></select></label>
+      <label><span>Model</span><select id="predictionModelSelect"><option value="Random Forest">Random Forest</option><option value="XGBoost">XGBoost</option><option value="MLP">MLP</option></select></label>
+    </div>
+    <div class="card-actions">
+      <button id="evaluatePredictionsBtn" type="button" class="btn btn-primary">Train and evaluate</button>
+      <a href="/academic-insights/" class="btn btn-secondary">Continue to academic insights</a>
+    </div>
+    <p id="predictionStatus" class="muted-copy" aria-live="polite">Choose a DP output to load available targets.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-header"><h2>Holdout performance</h2></div>
+    <div class="summary-grid">
+      <div class="summary-item"><span class="summary-label" id="syntheticScoreLabel">Synthetic-trained score</span><strong id="predictionSyntheticScore">—</strong></div>
+      <div class="summary-item"><span class="summary-label" id="realScoreLabel">Real-trained score</span><strong id="predictionRealScore">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Held-out students</span><strong id="predictionStudents">—</strong></div>
+      <div class="summary-item"><span class="summary-label">Held-out rows</span><strong id="predictionRows">—</strong></div>
+    </div>
+    <p id="predictionDetails" class="muted-copy"></p>
+  </section>
+
+  <section id="classificationResults" class="card" hidden>
+    <div class="card-header"><h2>Classification metrics</h2></div>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>Training data</th><th>Weighted precision</th><th>Weighted recall</th><th>Weighted F1</th></tr></thead>
+      <tbody id="classificationMetricsBody"></tbody>
+    </table></div>
+    <h3>Confusion matrices</h3>
+    <div class="settings-grid">
+      <div><h4>Synthetic-trained</h4><div class="table-wrap" id="syntheticConfusion"></div></div>
+      <div><h4>Real-trained</h4><div class="table-wrap" id="realConfusion"></div></div>
+    </div>
+  </section>
+
+  <section id="regressionResults" class="card" hidden>
+    <div class="card-header"><h2>Regression errors</h2></div>
+    <div class="table-wrap"><table class="data-table">
+      <thead><tr><th>Training data</th><th>Mean absolute error</th><th>Root mean squared error</th></tr></thead>
+      <tbody id="regressionMetricsBody"></tbody>
+    </table></div>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/evaluate_predictions.js' %}?v=20261023-1"></script>{% endblock %}

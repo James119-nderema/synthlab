@@ -1,0 +1,64 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Privacy-Utility Analysis | SynthLab{% endblock %}
+{% block page_title %}Privacy-utility analysis{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Privacy-utility sweep</h2>
+        <p>Retrain the DP generator at several epsilon values, then compare utility and privacy against held-out real records. The selected DP file supplies the linked source and output row count; each sweep point is evaluated using its newly generated data.</p>
+      </div>
+      <span class="badge badge-secondary">DP budget is charged for each sweep point</span>
+    </div>
+
+    <div class="settings-grid">
+      <label><span>DP reference output</span><select id="sweepDatasetSelect"><option value="">Loading DP outputs…</option></select></label>
+      <label><span>Numeric prediction target</span><select id="sweepTargetSelect" disabled><option value="">Choose a dataset first</option></select></label>
+      <label><span>Epsilon values (comma separated)</span><input id="sweepEpsilonsInput" type="text" placeholder="0.2, 0.4, 0.6" /></label>
+    </div>
+    <div class="card-actions">
+      <button id="runSweepBtn" type="button" class="btn btn-primary">Run privacy–utility sweep</button>
+      <a href="/privacy-mechanism/" class="btn btn-secondary">Configure privacy budget</a>
+    </div>
+    <p id="sweepBudgetStatus" class="muted-copy" aria-live="polite"></p>
+    <p id="sweepStatus" class="muted-copy" aria-live="polite"></p>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Recommended epsilon</span>
+        <strong id="recommendedEpsilon">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">Utility vs baseline</span>
+        <strong id="bestUtility">—</strong>
+      </div>
+      <div class="summary-item">
+        <span class="summary-label">MIA AUC</span>
+        <strong id="recommendedMia">—</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2>Results table</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Epsilon</th><th>Utility score</th><th>TSTR R2</th><th>MIA AUC</th><th>Verdict</th></tr>
+        </thead>
+        <tbody id="sweepTableBody">
+          <tr><td colspan="5">No privacy–utility sweep results yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="card"><a href="/ai-analytics-model/" class="btn btn-primary">Continue to AI analytics model</a></section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/privacy_utility.js' %}?v=20261023-1"></script>{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Privacy Mechanism | SynthLab{% endblock %}
+{% block page_title %}Configure privacy mechanism{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div><h2>PAC-Synth differential privacy settings</h2><p>Set the student-level privacy budget used for DP marginal synthesis. The generator spends this budget when it is trained.</p></div>
+      <a href="/dp-generator/" class="btn btn-primary">Next: train DP generator</a>
+    </div>
+    <form id="privacyBudgetForm">
+      <div class="settings-grid">
+        <label><span>Cleaned dataset</span><select id="budgetDatasetSelect" name="dataset_id" required><option value="">Loading cleaned datasets…</option></select></label>
+        <label><span>Epsilon</span><input type="number" name="epsilon" min="0.01" step="0.01" value="3" required /></label>
+        <label><span>Delta budget</span><input type="number" name="delta" min="0.000000000001" max="0.999999999999" step="any" value="0.00001" required /><small id="deltaLimitHint" class="muted-copy">Must be less than 1 / number of students in the cleaned dataset.</small></label>
+        <label><span>Maximum combination length</span><select name="reporting_length"><option value="1">1 · single attributes</option><option value="2" selected>2 · pairs</option><option value="3">3 · triples</option></select></label>
+      </div>
+      <p class="muted-copy">Larger epsilon gives weaker privacy and usually better statistical detail. Longer combinations can improve correlations but increase runtime and noise.</p>
+      <div class="card-actions"><button type="submit" id="saveBudgetBtn" class="btn btn-primary">Save privacy settings</button><span id="budgetStatus" class="status-inline hidden" aria-live="polite"></span></div>
+    </form>
+  </section>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'lab/js/privacy_mechanism.js' %}"></script>{% endblock %}

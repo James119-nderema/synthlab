@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DJANGO_DB_PATH: /app/data/db.sqlite3
+      DJANGO_MEDIA_ROOT: /app/media
+      DJANGO_STATIC_ROOT: /app/staticfiles
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - synthlab_data:/app/data
+      - synthlab_media:/app/media
+
+volumes:
+  synthlab_data:
+  synthlab_media:

@@ -1,0 +1,53 @@
+{% extends 'lab/base.html' %}
+{% load static %}
+
+{% block title %}Validate Synthetic Data | SynthLab{% endblock %}
+{% block page_title %}Validate synthetic data{% endblock %}
+
+{% block content %}
+  <section class="card">
+    <div class="card-header split-header">
+      <div>
+        <h2>Fidelity validation</h2>
+        <p>Compare each DP synthetic output with the cleaned dataset used to generate it. Higher fidelity indicates closer statistical similarity, not better privacy.</p>
+      </div>
+    </div>
+
+    <div class="settings-grid">
+      <label>
+        <span>DP synthetic dataset</span>
+        <select id="datasetSelect"><option value="">Loading DP outputs…</option></select>
+      </label>
+    </div>
+
+    <div class="card-actions">
+      <button type="button" id="validateBtn" class="btn btn-primary">Run validation</button>
+      <a href="/privacy-evaluation/" class="btn btn-secondary">Private review</a>
+    </div>
+    <p id="validationStatus" class="muted-copy" aria-live="polite"></p>
+  </section>
+
+  <section class="card summary-card">
+    <div class="card-header">
+      <h2>Validation result</h2>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Score</span>
+        <strong id="scoreValue">0.00</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Compared datasets</span>
+        <strong id="comparisonValue">Run validation to compare a DP output with its source.</strong>
+      </div>
+      <div class="summary-item summary-wide">
+        <span class="summary-label">Details</span>
+        <ul id="detailsList" class="change-log"></ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'lab/js/validate.js' %}?v=20261023-2"></script>
+{% endblock %}
